@@ -9,11 +9,12 @@ def get_rating(name):
 
 def input_checked():
     global options
-    choice = input()
-    if choice not in ["!exit", "!rating"] + options:
-        print("Invalid input")
-    else:
-        return choice
+    while True:
+        choice = input()
+        if choice not in ["!exit", "!rating"] + options:
+            print("Invalid input")
+        else:
+            return choice
 
 def winner_list(computer_choice):
     global options
@@ -43,14 +44,15 @@ def game(choice):
             print("Sorry, but the computer chose {}".format(computer_choice))
 
 
-
-
-
 name = input("Enter your name!")
 print("Hello, " + name)
 points = int(get_rating(name))
-options = input().split(",")
-print("Ok, let's start")
+options = input()
+if options == "":
+    options = ["rock", "paper", "scissors"]
+else:
+    options = options.split(",")
+print("Okay, let's start")
 while True:
     choice = input_checked()
     if choice == "!exit":
