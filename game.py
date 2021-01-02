@@ -8,47 +8,49 @@ def get_rating(name):
     return 0
 
 def input_checked():
+    global options
     choice = input()
-    if choice not in ["!exit", "paper", "scissors", "rock", "!rating"]:
+    if choice not in ["!exit", "!rating"] + options:
         print("Invalid input")
     else:
         return choice
 
+def winner_list(computer_choice):
+    global options
+    global choice
+    new_options = []
+    for i in range(options.index(choice)+1, len(options)):
+        new_options.append(options[i])
+    for i in range(options.index(choice)):
+        new_options.append(options[i])
+    if new_options.index(computer_choice)+1 > (len(new_options) // 2):
+        return True
+    return False
+
+
 def game(choice):
+    global options
     global points
-    computer_choice = random.choice(["rock", "scissors", "paper"])
-    if choice == "rock":
-        if computer_choice == "rock":
-            print("There is a draw (rock)")
-            points += 50
-        elif computer_choice == "scissors":
+    computer_choice = random.choice(options)
+    if computer_choice == choice:
+        points += 50
+        print("There is a draw ({})".format(choice))
+    else:
+        if winner_list(computer_choice):
             print("Well done. The computer chose {} and failed".format(computer_choice))
             points += 100
         else:
-            print("Sorry, but the computer chose paper")
-    elif choice == "paper":
-        if computer_choice == "paper":
-            print("There is a draw (paper)")
-            points += 50
-        elif computer_choice == "rock":
-            print("Well done. The computer chose {} and failed".format(computer_choice))
-            points += 100
-        else:
-            print("Sorry, but the computer chose scissors")
-    elif choice == "scissors":
-        if computer_choice == "scissors":
-            print("There is a draw (scissors)")
-            points += 50
-        elif computer_choice == "paper":
-            print("Well done. The computer chose {} and failed".format(computer_choice))
-            points += 100
-        else:
-            print("Sorry, but the computer chose rock")
+            print("Sorry, but the computer chose {}".format(computer_choice))
+
+
+
 
 
 name = input("Enter your name!")
 print("Hello, " + name)
 points = int(get_rating(name))
+options = input().split(",")
+print("Ok, let's start")
 while True:
     choice = input_checked()
     if choice == "!exit":
